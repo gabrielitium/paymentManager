@@ -1,0 +1,187 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0.29
+    container_name: mysql8
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "rootpassword"
+      MYSQL_DATABASE: "banco"
+      MYSQL_USER: "gabriel"
+      MYSQL_PASSWORD: "userPassword9"
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - my_network
+
+  redis:
+    image: redis:7.0
+    container_name: redis
+    ports:
+      - "6379:6379"  # Default Redis port
+    networks:
+      - my_network
+    restart: unless-stopped
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.3.0
+    container_name: zookeeper
+    restart: always
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    ports:
+      - "2181:2181"
+    networks:
+      - my_network
+
+  kafka:
+    image: confluentinc/cp-kafka:7.3.0
+    container_name: kafka
+    restart: always
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,EXTERNAL://192.168.100.54:9093
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,EXTERNAL://0.0.0.0:9093
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    ports:
+      - "9092:9092"
+      - "9093:9093"
+    networks:
+      - my_network
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop
+    restart: always
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_BROKER_CONNECT: kafka:9092
+    ports:
+      - "9000:9000"
+    networks:
+      - my_network
+
+  pms-productos-services:
+    # Build using the current directory (.) and the Dockerfile found there
+    build:
+      context: /home/gabriel/Documents/proyectoPagos/pms-productos-services
+      dockerfile: Dockerfile
+
+    # Name/tag for the built image (optional but often useful)
+    image: my-java-app:latest
+
+    depends_on:
+      - mysql
+      - redis
+
+    # Map container port 8080 -> host port 8080
+    ports:
+      - "8082:8082"
+
+    # (Optional) environment variables
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+
+    networks:
+      - my_network
+
+    restart: unless-stopped
+
+  pms-pagos-services:
+    # Build using the current directory (.) and the Dockerfile found there
+    build:
+      context: /home/gabriel/Documents/proyectoPagos/pms-pagos-services
+      dockerfile: Dockerfile
+
+    # Name/tag for the built image (optional but often useful)
+    image: my-java-app:latest
+
+    depends_on:
+      - mysql
+      - redis
+
+    # Map container port 8085 -> host port 8085
+    ports:
+      - "8085:8085"
+
+    # (Optional) environment variables
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+
+    networks:
+      - my_network
+
+    restart: unless-stopped
+
+  pms-proveedores-services:
+    # Build using the current directory (.) and the Dockerfile found there
+    build:
+      context: /home/gabriel/Documents/proyectoPagos/pms-proveedores-services
+      dockerfile: Dockerfile
+
+    # Name/tag for the built image (optional but often useful)
+    image: my-java-app:latest
+
+    depends_on:
+      - mysql
+      - redis
+
+    # Map container port 8084 -> host port 8084
+    ports:
+      - "8084:8084"
+
+    # (Optional) environment variables
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+
+    networks:
+      - my_network
+
+    restart: unless-stopped
+
+  pms-clientes-services:
+    # Build using the current directory (.) and the Dockerfile found there
+    build:
+      context: /home/gabriel/Documents/proyectoPagos/pms-clientes-services
+      dockerfile: Dockerfile
+
+    # Name/tag for the built image (optional but often useful)
+    image: my-java-app:latest
+
+    depends_on:
+      - mysql
+      - redis
+
+    # Map container port 8083 -> host port 8083
+    ports:
+      - "8083:8083"
+
+    # (Optional) environment variables
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+
+    networks:
+      - my_network
+
+    restart: unless-stopped
+
+
+volumes:
+  mysql_data:
+
+networks:
+  my_network:
+    driver: bridge
+
