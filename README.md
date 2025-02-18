@@ -54,7 +54,16 @@ En este repositorio podrá encontrar los archivos sql para creación de las tabl
 ![image](https://github.com/user-attachments/assets/6160660c-6506-442a-8c13-415937613e46)
 
 
+
+
 El proyecto fue probado en un ambiente docker compose, con una distribución debian 12.
+
+Será necesario actualizar la ruta de los servicios dentro del archivo docker-file.yml
+![image](https://github.com/user-attachments/assets/7f2f7219-9b06-4bba-9974-678bc406dcfd)
+
+
+Creando los contenedores docker
+
 ![image](https://github.com/user-attachments/assets/5fd53433-fbad-4082-9959-8bad0f521bd5)
 
 
