@@ -66,6 +66,11 @@ Creando los contenedores docker
 
 ![image](https://github.com/user-attachments/assets/5fd53433-fbad-4082-9959-8bad0f521bd5)
 
+Estamos usando un Broker y un consumer
+
+![image](https://github.com/user-attachments/assets/0cf48697-c6fc-431c-8727-b350beedd54d)
+
+
 
 
 
