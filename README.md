@@ -70,6 +70,10 @@ Estamos usando un Broker y un consumer
 
 ![image](https://github.com/user-attachments/assets/0cf48697-c6fc-431c-8727-b350beedd54d)
 
+Mensajes en el topico
+
+![image](https://github.com/user-attachments/assets/15b8b0a6-aae7-483f-8643-2b7346db5256)
+
 
 
 
