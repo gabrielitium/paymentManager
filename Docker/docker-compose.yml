@@ -76,7 +76,7 @@ services:
       dockerfile: Dockerfile
 
     # Name/tag for the built image (optional but often useful)
-    image: my-java-app:latest
+    image: pms-productos-services:latest
 
     depends_on:
       - mysql
@@ -103,7 +103,7 @@ services:
       dockerfile: Dockerfile
 
     # Name/tag for the built image (optional but often useful)
-    image: my-java-app:latest
+    image: pms-pagos-services:latest
 
     depends_on:
       - mysql
@@ -130,7 +130,7 @@ services:
       dockerfile: Dockerfile
 
     # Name/tag for the built image (optional but often useful)
-    image: my-java-app:latest
+    image: pms-proveedores-services:latest
 
     depends_on:
       - mysql
@@ -157,7 +157,7 @@ services:
       dockerfile: Dockerfile
 
     # Name/tag for the built image (optional but often useful)
-    image: my-java-app:latest
+    image: pms-clientes-services:latest
 
     depends_on:
       - mysql
